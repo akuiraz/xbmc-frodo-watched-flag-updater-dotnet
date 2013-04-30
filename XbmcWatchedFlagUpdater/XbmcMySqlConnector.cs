@@ -57,7 +57,7 @@ namespace XbmcWatchedFlagUpdater
             this.sqlPassword = sqlPassword;
             MySqlConnection connection = new MySqlConnection(buildConnectionString()); //build the connection string
 
-            string updateCommand = "SELECT strFileName, lastPlayed, playCount FROM myvideos75.files WHERE playCount >= 1 and strFileName != '';"; //build the SQL command
+            string updateCommand = "SELECT strFileName, lastPlayed, playCount FROM " + Properties.Settings.Default.DatabaseName + ".files WHERE playCount >= 1 and strFileName != '';"; //build the SQL command
 
             command = new MySqlCommand(updateCommand, connection);
             command.CommandTimeout = 0; //disable timeout setting
@@ -73,7 +73,7 @@ namespace XbmcWatchedFlagUpdater
             foreach (XbmcFile file in WatchedFiles)
             {
                 //System.Windows.Forms.MessageBox.Show(file.FileName);
-                string command = "UPDATE myvideos75.files SET playCount='" + file.WatchedCount + "', lastPlayed='" + file.LastWatchedDate + "' WHERE strFileName= '" + file.FileName + "'; " + Environment.NewLine;           
+                string command = "UPDATE " + Properties.Settings.Default.DatabaseName + ".files SET playCount='" + file.WatchedCount + "', lastPlayed='" + file.LastWatchedDate + "' WHERE strFileName= '" + file.FileName + "'; " + Environment.NewLine;           
                 commands.Append(command);
             }
 
@@ -86,7 +86,7 @@ namespace XbmcWatchedFlagUpdater
         /// <returns>A connection string that will connect to a MySQL database</returns>
         private string buildConnectionString()
         {
-            string connectionString = "server=" + serverLocation + ";User Id='" + sqlUserName + "';password='" + sqlPassword + "';Persist Security Info=True;database=myvideos75";
+            string connectionString = "server=" + serverLocation + ";User Id='" + sqlUserName + "';password='" + sqlPassword + "';Persist Security Info=True;database=" + Properties.Settings.Default.DatabaseName;
             return connectionString;
         }
 
@@ -121,11 +121,11 @@ namespace XbmcWatchedFlagUpdater
         {
             List<XbmcFile> files = new List<XbmcFile>();
 
-            MySqlDataReader myReader;
-            command.Connection.Open();
-            myReader = command.ExecuteReader();
+            MySqlDataReader myReader = null;    
             try
             {
+                command.Connection.Open();
+                myReader = command.ExecuteReader();
                 //read the data sent back from MySQL server and create the XbmcFile objects
                 while (myReader.Read())
                 {
@@ -141,7 +141,8 @@ namespace XbmcWatchedFlagUpdater
             }
             finally
             {
-                myReader.Close();
+                if (myReader != null)
+                    myReader.Close();
                 command.Connection.Close();
             }
             return files;

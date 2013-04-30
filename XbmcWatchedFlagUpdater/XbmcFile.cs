@@ -8,7 +8,7 @@ namespace XbmcWatchedFlagUpdater
     /// <summary>
     /// Contains the file name, watched count and last watched date of an individual file
     /// </summary>
-    class XbmcFile
+    class XbmcFile : IComparable
     {
         public int WatchedCount { get; private set; }
         public string LastWatchedDate { get; private set; }
@@ -19,6 +19,12 @@ namespace XbmcWatchedFlagUpdater
             FileName = fileName;
             WatchedCount = watchedCount;
             LastWatchedDate = lastWatchedDate;
+        }
+
+        public int CompareTo(object obj)
+        {
+            XbmcFile itemToCompare = obj as XbmcFile;
+            return String.Compare(this.FileName, itemToCompare.FileName);
         }
     }
 }

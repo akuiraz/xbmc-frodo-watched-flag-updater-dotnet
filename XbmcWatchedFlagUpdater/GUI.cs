@@ -29,7 +29,9 @@ namespace XbmcWatchedFlagUpdater
             textBoxLocalDBPath.Text = Properties.Settings.Default.LocalDBFile;
             if (textBoxLocalDBPath.Text.Length < 1)
                 textBoxLocalDBPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\XBMC\userdata\Database\MyVideos75.db";
-
+            textBoxDatabaseName.Text = Properties.Settings.Default.DatabaseName;
+            if (textBoxDatabaseName.Text.Length < 1)
+                textBoxDatabaseName.Text = "myvideos75";
         }
 
         #region Remote Buttons and Background Workers
@@ -39,6 +41,7 @@ namespace XbmcWatchedFlagUpdater
             //select an xml file to import from
             openFileDialog1.InitialDirectory = "c:\\";
             openFileDialog1.Filter = "xml files (*.xml)|*.xml";
+            openFileDialog1.FileName = "";
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -62,6 +65,7 @@ namespace XbmcWatchedFlagUpdater
                 Properties.Settings.Default.Username = textBoxUsername.Text;
                 Properties.Settings.Default.Password = textBoxPassword.Text;
                 Properties.Settings.Default.ImportPathRemote = textBoxImportPathRemote.Text;
+                Properties.Settings.Default.DatabaseName = textBoxDatabaseName.Text;
                 Properties.Settings.Default.Save();
 
                 //read files
@@ -83,6 +87,7 @@ namespace XbmcWatchedFlagUpdater
             //select an xml file to export to
             saveFileDialog1.InitialDirectory = "c:\\";
             saveFileDialog1.Filter = "xml files (*.xml)|*.xml";
+            saveFileDialog1.FileName = "";
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -106,6 +111,7 @@ namespace XbmcWatchedFlagUpdater
                 Properties.Settings.Default.Username = textBoxUsername.Text;
                 Properties.Settings.Default.Password = textBoxPassword.Text;
                 Properties.Settings.Default.ExportPathRemote = textBoxExportPathRemote.Text;
+                Properties.Settings.Default.DatabaseName = textBoxDatabaseName.Text;
                 Properties.Settings.Default.Save();
 
                 //run export in different thread
@@ -131,6 +137,7 @@ namespace XbmcWatchedFlagUpdater
             //cast the connector then execute export command
             XbmcMySqlConnector sql = (XbmcMySqlConnector)e.Argument;
             List<XbmcFile> files = sql.ExportWatchedFlags();
+            files.Sort();
             XMLConnector.WriteFiles(textBoxExportPathRemote.Text, files);
             MessageBox.Show("Export complete. " + files.Count + " files found.");
         }

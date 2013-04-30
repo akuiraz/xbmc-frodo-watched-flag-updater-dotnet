@@ -46,6 +46,8 @@
             this.textBoxImportPathRemote = new System.Windows.Forms.TextBox();
             this.buttonImportRemote = new System.Windows.Forms.Button();
             this.groupBoxConnection = new System.Windows.Forms.GroupBox();
+            this.labelDatabase = new System.Windows.Forms.Label();
+            this.textBoxDatabaseName = new System.Windows.Forms.TextBox();
             this.labelServerIP = new System.Windows.Forms.Label();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
@@ -93,7 +95,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 355);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 372);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(319, 22);
             this.statusStrip1.TabIndex = 9;
@@ -116,7 +118,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(299, 333);
+            this.tabControl1.Size = new System.Drawing.Size(299, 353);
             this.tabControl1.TabIndex = 10;
             // 
             // tabPage1
@@ -127,7 +129,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(291, 307);
+            this.tabPage1.Size = new System.Drawing.Size(291, 327);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Shared MySQL Library";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -137,7 +139,7 @@
             this.groupBoxExport.Controls.Add(this.textBoxExportPathRemote);
             this.groupBoxExport.Controls.Add(this.buttonSelectFileExportRemote);
             this.groupBoxExport.Controls.Add(this.buttonExportRemote);
-            this.groupBoxExport.Location = new System.Drawing.Point(6, 217);
+            this.groupBoxExport.Location = new System.Drawing.Point(6, 239);
             this.groupBoxExport.Name = "groupBoxExport";
             this.groupBoxExport.Size = new System.Drawing.Size(277, 80);
             this.groupBoxExport.TabIndex = 13;
@@ -177,7 +179,7 @@
             this.groupBoxImport.Controls.Add(this.labelImportPath);
             this.groupBoxImport.Controls.Add(this.textBoxImportPathRemote);
             this.groupBoxImport.Controls.Add(this.buttonImportRemote);
-            this.groupBoxImport.Location = new System.Drawing.Point(6, 114);
+            this.groupBoxImport.Location = new System.Drawing.Point(6, 136);
             this.groupBoxImport.Name = "groupBoxImport";
             this.groupBoxImport.Size = new System.Drawing.Size(277, 97);
             this.groupBoxImport.TabIndex = 12;
@@ -222,6 +224,8 @@
             // 
             // groupBoxConnection
             // 
+            this.groupBoxConnection.Controls.Add(this.labelDatabase);
+            this.groupBoxConnection.Controls.Add(this.textBoxDatabaseName);
             this.groupBoxConnection.Controls.Add(this.labelServerIP);
             this.groupBoxConnection.Controls.Add(this.textBoxPassword);
             this.groupBoxConnection.Controls.Add(this.labelPassword);
@@ -230,10 +234,26 @@
             this.groupBoxConnection.Controls.Add(this.textBoxUsername);
             this.groupBoxConnection.Location = new System.Drawing.Point(6, 6);
             this.groupBoxConnection.Name = "groupBoxConnection";
-            this.groupBoxConnection.Size = new System.Drawing.Size(278, 102);
+            this.groupBoxConnection.Size = new System.Drawing.Size(278, 124);
             this.groupBoxConnection.TabIndex = 11;
             this.groupBoxConnection.TabStop = false;
             this.groupBoxConnection.Text = "MySQL Server Connection";
+            // 
+            // labelDatabase
+            // 
+            this.labelDatabase.AutoSize = true;
+            this.labelDatabase.Location = new System.Drawing.Point(6, 94);
+            this.labelDatabase.Name = "labelDatabase";
+            this.labelDatabase.Size = new System.Drawing.Size(56, 13);
+            this.labelDatabase.TabIndex = 8;
+            this.labelDatabase.Text = "Database:";
+            // 
+            // textBoxDatabaseName
+            // 
+            this.textBoxDatabaseName.Location = new System.Drawing.Point(80, 94);
+            this.textBoxDatabaseName.Name = "textBoxDatabaseName";
+            this.textBoxDatabaseName.Size = new System.Drawing.Size(189, 20);
+            this.textBoxDatabaseName.TabIndex = 7;
             // 
             // labelServerIP
             // 
@@ -291,7 +311,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(291, 307);
+            this.tabPage2.Size = new System.Drawing.Size(291, 327);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Local SQLite Library";
             // 
@@ -435,12 +455,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 377);
+            this.ClientSize = new System.Drawing.Size(319, 394);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "GUI";
-            this.Text = "XBMC Watched Flag Helper 2.1";
+            this.Text = "XBMC Watched Flag Helper 2.2";
             this.Load += new System.EventHandler(this.GUI_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -506,6 +527,8 @@
         private System.Windows.Forms.Button buttonSelectLocalPath;
         private System.ComponentModel.BackgroundWorker backgroundWorkerImportLocal;
         private System.ComponentModel.BackgroundWorker backgroundWorkerExportLocal;
+        private System.Windows.Forms.Label labelDatabase;
+        private System.Windows.Forms.TextBox textBoxDatabaseName;
     }
 }
 
