@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,28 +13,46 @@ namespace XbmcWatchedFlagUpdater
     {
         static public List<XbmcFile> ReadFiles(string XmlPathLocation)
         {
-            List<XbmcFile> files = new List<XbmcFile>();
-
-            //read files, place into collection
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(XmlPathLocation);
-
-           
-
-            foreach (XmlNode xmlNode in xmlDoc.ChildNodes[0].ChildNodes)
+            try
             {
-                
-                if (xmlNode.Name.ToString() == "file")
-                {                 
-                    string lastWatched = xmlNode.Attributes["lastPlayed"].Value.ToString();
-                    int count = Convert.ToInt32(xmlNode.Attributes["Count"].Value);
-                    string fileName = xmlNode.InnerText.ToString();
-                    fileName = fileName.Replace("'", "''"); //replace a single quote with a double-single quote - this stops an error
+                List<XbmcFile> files = new List<XbmcFile>();
 
-                    files.Add(new XbmcFile(fileName, count, lastWatched));
+                //read files, place into collection
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(XmlPathLocation);
+
+
+
+                foreach (XmlNode xmlNode in xmlDoc.ChildNodes[0].ChildNodes)
+                {
+
+                    if (xmlNode.Name.ToString() == "file")
+                    {
+                        string lastWatched = xmlNode.Attributes["lastPlayed"].Value.ToString();
+                        int count = Convert.ToInt32(xmlNode.Attributes["Count"].Value);
+                        string fileName = xmlNode.InnerText.ToString();
+                        fileName = fileName.Replace("'", "''"); //replace a single quote with a double-single quote - this stops an error
+
+                        files.Add(new XbmcFile(fileName, count, lastWatched));
+                    }
                 }
+                return files;
             }
-            return files;
+            catch (XmlException ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Unable to read XML file.  Check XML strucure: " + Environment.NewLine + Environment.NewLine + ex.ToString());
+                return null;
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                System.Windows.Forms.MessageBox.Show("XML file does not exist:" + Environment.NewLine + XmlPathLocation + Environment.NewLine + Environment.NewLine + ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Unable to read XML File:" + Environment.NewLine + Environment.NewLine + ex.ToString());
+                return null;
+            }
         }
 
         static public void WriteFiles(string XmlPathLocation, List<XbmcFile> files)
